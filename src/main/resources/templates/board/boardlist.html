@@ -1,0 +1,84 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시글 리스트 페이지</title>
+</head>
+
+<style>
+
+    .layout {
+        width: 500px;
+        margin: 0 auto;
+        margin-top: 40px;
+        font-size: 30px;
+        text-decoration: none;
+    }
+</style>
+
+
+<body>
+
+
+<div layout:fragment="content" class="table">
+    <!-- 게시글 출력 -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">게시글 번호</th>
+            <th scope="col">제목</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${list}">
+            <td th:text="${board.id}">1</td>
+            <td><a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- 글쓰기 버튼 출력 -->
+    <div style="text-align: center">
+        <button><a href="/board/write">글쓰기</a></button>
+    </div>
+    <br>
+    <!-- 페이징 출력 -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination" style="justify-content: center">
+                <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                <a class="page-link" th:if="${page != nowPage}" th:href="@{/board/list(page= ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                    <a class="page-link" th:if="${page == nowPage}" th:text="${page}" style="color : red"></a>
+                </li>
+        </ul>
+    </nav>
+    <!-- 검색폼 출력 -->
+    <form th:action="@{/board/list}" method="get" style="text-align: center">
+        <input type="text" name="searchKeyword">
+        <button type="submit" class="btn btn-primary">검색</button>
+    </form>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
